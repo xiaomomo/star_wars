@@ -8,6 +8,9 @@ class Plane(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.speed = 5
         self.bg_size = bg_size
+        # 飞机位于舞台底部
+        self.rect.x = self.bg_size[0] / 2
+        self.rect.y = self.bg_size[1] - self.rect.height
 
     def update(self, *args):
         pass

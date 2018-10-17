@@ -7,16 +7,17 @@ from pygame.locals import *
 
 WIDTH = 360
 HEIGHT = 480
-FPS = 30
+FPS = 60
 
 # 定义颜色常量
 BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
 
 # 1. 初始化游戏
 pygame.init()
 pygame.mixer.init()  ## For sound
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("设计游戏")
+pygame.display.set_caption("射击游戏")
 clock = pygame.time.Clock()
 
 # 2.游戏里的所有角色
@@ -32,6 +33,16 @@ for i in range(6):
 
 # 3.游戏主循环
 running = True
+score = 0
+pygame.font.init()
+
+
+def show_text(word, color, position, font_size):
+    sys_font = pygame.font.SysFont('Comic Sans MS', font_size)
+    score_surface = sys_font.render(word, False, color)
+    screen.blit(score_surface, position)
+
+
 while running:
     # 4.设置游戏帧率
     clock.tick(FPS)
@@ -59,8 +70,20 @@ while running:
             bullet_sprites.add(bullet)
             all_sprites.add(bullet)
 
+    # 子弹击毁敌舰
+    bullet_collide_dic = pygame.sprite.groupcollide(bullet_sprites, enemy_sprites, True, True)
+    for bullet in bullet_collide_dic:
+        score += 1
+        print(bullet, bullet_collide_dic[bullet], score)
+
+    if pygame.sprite.spritecollideany(plane, enemy_sprites) is not None:
+        print('killed')
+        running = False
+
     # 7. 渲染游戏背景
     screen.fill(BLACK)
+    show_text('score:' + str(score), WHITE, (WIDTH - 100, 0), 30)
+
     # 8. 渲染所有角色
     all_sprites.draw(screen)
 
