@@ -72,10 +72,11 @@ while running:
 
     # 子弹击毁敌舰
     for enemy in enemy_sprites:
-        enemy.strike(bullet_sprites)
-        if not enemy.is_survive():
-            score += 1
-            print(enemy, score)
+        if enemy.is_survive():
+            enemy.strike(bullet_sprites)
+            if not enemy.is_survive():
+                score += 1
+                print(enemy, score)
 
     # 增加敌舰
     if len(enemy_sprites) <= ENEMY_MIN_SIZE:
