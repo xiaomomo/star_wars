@@ -12,6 +12,7 @@ FPS = 60
 # 定义颜色常量
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
+RED = (255, 0, 0)
 
 # 1. 初始化游戏
 pygame.init()
@@ -34,6 +35,7 @@ for i in range(6):
 # 3.游戏主循环
 running = True
 score = 0
+life = 3
 pygame.font.init()
 
 
@@ -76,13 +78,18 @@ while running:
         score += 1
         print(bullet, bullet_collide_dic[bullet], score)
 
-    if pygame.sprite.spritecollideany(plane, enemy_sprites) is not None:
-        print('killed')
-        running = False
+    # 敌舰撞击飞机
+    collide_planes = pygame.sprite.spritecollide(plane, enemy_sprites, True)
+    if len(collide_planes) > 0:
+        life -= 1
+        print('life', life)
+        if life <= 0:
+            running = False
 
     # 7. 渲染游戏背景
     screen.fill(BLACK)
     show_text('score:' + str(score), WHITE, (WIDTH - 100, 0), 30)
+    show_text('life:' + str(life), RED, (WIDTH - 100, 20), 30)
 
     # 8. 渲染所有角色
     all_sprites.draw(screen)
