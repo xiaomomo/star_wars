@@ -13,6 +13,8 @@ FPS = 60
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
+ENEMY_SIZE = 6
+ENEMY_MIN_SIZE = 2
 
 # 1. 初始化游戏
 pygame.init()
@@ -27,10 +29,17 @@ plane = Plane((WIDTH, HEIGHT))
 all_sprites.add(plane)
 bullet_sprites = pygame.sprite.Group()
 enemy_sprites = pygame.sprite.Group()
-for i in range(6):
-    enemy = Enemy((random.randrange(0, WIDTH), random.randrange(0, 50)))
-    enemy_sprites.add(enemy)
-    all_sprites.add(enemy)
+
+
+def init_enemy(size):
+    for i in range(size):
+        enemy = Enemy((random.randrange(0, WIDTH), random.randrange(0, 50)))
+        enemy_sprites.add(enemy)
+        all_sprites.add(enemy)
+
+
+# 初始化敌舰
+init_enemy(ENEMY_SIZE)
 
 # 3.游戏主循环
 running = True
@@ -77,6 +86,10 @@ while running:
     for bullet in bullet_collide_dic:
         score += 1
         print(bullet, bullet_collide_dic[bullet], score)
+
+    # 增加敌舰
+    if len(enemy_sprites) <= ENEMY_MIN_SIZE:
+        init_enemy(ENEMY_SIZE - len(enemy_sprites))
 
     # 敌舰撞击飞机
     collide_planes = pygame.sprite.spritecollide(plane, enemy_sprites, True)
