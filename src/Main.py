@@ -1,20 +1,10 @@
 import pygame
 import random
+from src.constant import *
 from src.plane import Plane
 from src.bullet import Bullet
 from src.enemy import Enemy
 from pygame.locals import *
-
-WIDTH = 360
-HEIGHT = 480
-FPS = 60
-
-# 定义颜色常量
-BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
-RED = (255, 0, 0)
-ENEMY_SIZE = 6
-ENEMY_MIN_SIZE = 2
 
 # 1. 初始化游戏
 pygame.init()
@@ -44,7 +34,6 @@ init_enemy(ENEMY_SIZE)
 # 3.游戏主循环
 running = True
 score = 0
-life = 3
 pygame.font.init()
 
 
@@ -82,32 +71,30 @@ while running:
             all_sprites.add(bullet)
 
     # 子弹击毁敌舰
-    bullet_collide_dic = pygame.sprite.groupcollide(bullet_sprites, enemy_sprites, True, True)
-    for bullet in bullet_collide_dic:
-        score += 1
-        print(bullet, bullet_collide_dic[bullet], score)
+    for enemy in enemy_sprites:
+        enemy.strike(bullet_sprites)
+        if not enemy.is_survive():
+            score += 1
+            print(enemy, score)
 
     # 增加敌舰
     if len(enemy_sprites) <= ENEMY_MIN_SIZE:
         init_enemy(ENEMY_SIZE - len(enemy_sprites))
 
     # 敌舰撞击飞机
-    collide_planes = pygame.sprite.spritecollide(plane, enemy_sprites, True)
-    if len(collide_planes) > 0:
-        life -= 1
-        print('life', life)
-        if life <= 0:
-            running = False
+    plane.strike(enemy_sprites)
+    if not plane.is_survive():
+        running = False
 
     # 7. 渲染游戏背景
     screen.fill(BLACK)
     show_text('score:' + str(score), WHITE, (WIDTH - 100, 0), 30)
-    show_text('life:' + str(life), RED, (WIDTH - 100, 20), 30)
+    show_text('life:' + str(plane.life), RED, (WIDTH - 100, 20), 30)
 
     # 8. 渲染所有角色
     all_sprites.draw(screen)
 
-    ## 9. 更新游戏画面
+    # 9.更新游戏画面
     pygame.display.flip()
 
 pygame.quit()

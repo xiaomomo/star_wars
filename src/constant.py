@@ -1,0 +1,11 @@
+# 游戏相关常量
+WIDTH = 360
+HEIGHT = 480
+FPS = 60
+
+# 定义颜色常量
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+RED = (255, 0, 0)
+ENEMY_SIZE = 6
+ENEMY_MIN_SIZE = 2

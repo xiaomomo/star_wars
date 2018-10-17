@@ -19,7 +19,7 @@ class Bullet(pygame.sprite.Sprite):
         super(Bullet, self).__init__()
         self.image = pygame.image.load('../assets/missile.png')
         self.rect = self.image.get_rect()
-        self.speed = 1
+        self.speed = 3
         self.rect.x = position[0]
         self.rect.y = position[1]
 

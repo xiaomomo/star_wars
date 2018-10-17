@@ -11,6 +11,7 @@ class Plane(pygame.sprite.Sprite):
         # 飞机位于舞台底部
         self.rect.x = self.bg_size[0] / 2
         self.rect.y = self.bg_size[1] - self.rect.height
+        self.life = 3
 
     def update(self, *args):
         pass
@@ -40,3 +41,14 @@ class Plane(pygame.sprite.Sprite):
             self.rect.x += self.speed
         else:
             self.rect.x = self.bg_size[0] - 60
+
+    # 撞击
+    def strike(self, enemy_group):
+        collide_planes = pygame.sprite.spritecollide(self, enemy_group, True)
+        if len(collide_planes) > 0:
+            self.life -= 1
+            print('life', self.life)
+
+    # 是否存活
+    def is_survive(self):
+        return self.life > 0
