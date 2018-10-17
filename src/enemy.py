@@ -26,6 +26,10 @@ class Enemy(pygame.sprite.Sprite):
             score_surface = self.sys_font.render('life:' + str(self.life), False, RED)
             self.image.blit(score_surface, (10, 0))
         else:
+            # 敌舰炸毁图片第一帧
+            if self.downIndex == 0:
+                enemy1_down_sound.play()
+            # 敌舰炸毁图片播放完毕
             if self.downIndex > 3:
                 self.kill()
             else:

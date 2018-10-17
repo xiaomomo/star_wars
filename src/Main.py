@@ -9,6 +9,8 @@ from pygame.locals import *
 # 1. 初始化游戏
 pygame.init()
 pygame.mixer.init()  ## For sound
+# 游戏背景音乐
+pygame.mixer.music.play(-1)
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("射击游戏")
 clock = pygame.time.Clock()
@@ -85,6 +87,7 @@ while running:
     # 敌舰撞击飞机
     plane.strike(enemy_sprites)
     if not plane.is_survive():
+        game_over_sound.play()
         running = False
 
     # 7. 渲染游戏背景

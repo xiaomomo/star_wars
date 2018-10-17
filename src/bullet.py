@@ -1,4 +1,5 @@
 import pygame
+from src.constant import *
 
 
 class Bullet(pygame.sprite.Sprite):
@@ -12,6 +13,7 @@ class Bullet(pygame.sprite.Sprite):
     @classmethod
     def new_bullet(cls, position):
         if pygame.time.get_ticks() - cls.last_shoot_time > cls.shoot_delay:
+            bullet_sound.play()
             cls.last_shoot_time = pygame.time.get_ticks()
             return Bullet(position)
 
